@@ -33,7 +33,7 @@ class GeoHexFactory(object):
         h_size = level * self.locator['h_size']
         lon_grid = lon * self.locator['h_grid']
         lat_grid = lat * self.locator['h_grid']
-        unit_x = 6 * h_size
+        unit_x = 6.0 * h_size
         unit_y = 2.8 * h_size
         h_k = (round((1.4/3) * self.locator['h_grid']))/self.locator['h_grid']
         base_x = math.floor((self.locator['min_x_lon'] + self.locator['min_x_lat'] / h_k) / unit_x)
