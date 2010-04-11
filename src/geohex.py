@@ -23,21 +23,32 @@ class GeoHexFactory(object):
 
     def get_by_latlon(self, lat, lon, level=7):
         '''Get GeoHex Object lat, long and level'''
-        return get_by_hexcode(latlon2geohex(lat, lon, level, self.locator))
+        return self.get_by_hexcode(latlon2geohex(lat, lon, level, self.locator))
         
     def get_by_hexcode(self, code):
         '''Get GeoHex Object by GeoHex Code'''
         pass
 
-    
-    def get_latlon(self, hexcode):
-        pass
-
-
-
 class GeoHex(object):
-    pass
+    def __init__(self, hexcode, locator):
+        self.hexcode = hexcode
+        self._locator = locator
+        self._latlon_info = geohex2latlon(self.hexcode, locator)
 
+    def _get_polygon(self):
+        lat = self._latlon_info[0]
+        lon = self._latlon_info[1]
+        level = self._latlon_info[2]
+        d = level * self._locator['h_size'] / self._locator['h_grid']
+
+        return (
+                (lat, lon - 2.0 * d),
+                (lat + 1.4 * d, lon - 1.0 * d),
+                (lat + 1.4 * d, lon + 1.0 * d),
+                (lat, lon + 2.0 * d),
+                (lat - 1.4 * d, lon + 1.0 * d),
+                (lat - 1.4 * d, 
+                ) 
 
 #internal methods
 def _hex2level(hexcode):
