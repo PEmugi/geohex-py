@@ -47,7 +47,8 @@ class GeoHex(object):
                 (lat + 1.4 * d, lon + 1.0 * d),
                 (lat, lon + 2.0 * d),
                 (lat - 1.4 * d, lon + 1.0 * d),
-                (lat - 1.4 * d, 
+                (lat - 1.4 * d, lon - 1.0 * d),
+                (lat, lon - 2.0 * d)
                 ) 
 
 #internal methods
