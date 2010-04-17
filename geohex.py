@@ -30,7 +30,7 @@ class GeoHexFactory(object):
         return GeoHex(code, self.locator)
 
 class GeoHex(object):
-    def __init__(self, hexcode, locator):
+    def __init__(self, hexcode, locator=_DEFAULT_LOCATOR):
         self._hexcode = hexcode
         self._locator = locator
         self._latlon_info = geohex2latlon(self._hexcode, locator)
@@ -56,16 +56,16 @@ class GeoHex(object):
                 )
 
     def distance(self, another_hex):
-        h_y, h_x, level = self._latlon_info
-        h_y2, h_x2, level2 = _he2hyhx(another_hex.hexcode)
+        h_y, h_x, level = _hex2hyhx(self._hexcode)
+        h_y2, h_x2, level2 = _hex2hyhx(another_hex.hexcode)
 
-        if level == level2:
+        if level != level2:
             raise Exception("Level of codes must be same value")
 
         dh_y = h_y - h_y2
         dh_x = h_x - h_x2
         ah_y = abs(dh_y)
-        ah_x = abs(dh_y)
+        ah_x = abs(dh_x)
 
         if dh_y * dh_x > 0:
             distance = ah_x if ah_x > ah_y else ah_y
@@ -74,18 +74,17 @@ class GeoHex(object):
 
         return distance
 
-    def distance2hex(self, distance):
-        h_y, h_x, level = self._latlon_info
+    def get_neighbors(self, distance):
+        h_y, h_x, level = _hex2hyhx(self._hexcode)
         result = []
-        for d_y in range(-1 * distance, distance):
-            dh_y = h_y + d_y
+        for d_y in range(-1 * distance, distance + 1):
             dmn_x = -1 * distance + d_y if d_y > 0 else -1 * distance
             dmx_x = distance + d_y if d_y < 0 else distance
 
-            for d_x in range(dmn_x, dmx_x):
+            for d_x in range(dmn_x, dmx_x + 1):
                 if d_y == 0 and d_x == 0:
                     continue
-                result.append(GeoHex(_hyhx2hex(h_y+d_y, h_x+d_x, level)))
+                result.append(GeoHex(_hyhx2hex(h_y+d_y, h_x+d_x, level), self._locator))
 
         return result
 
@@ -137,11 +136,8 @@ def _hyhx2hex(h_y, h_x, level=None):
             hexcode = _H_KEY[int(h_x_10)] + _H_KEY[int(h_y_10)] + _H_KEY[int(h_x_1)] + _H_KEY[int(h_y_1)]
         else:
             hexcode = _H_KEY[level%60] + _H_KEY[int(h_x_10)] + _H_KEY[int(h_y_10)] + _H_KEY[int(h_x_1)] + _H_KEY[int(h_y_1)]
-        
 
     return hexcode
-
-
 
 #utility methods
 def latlon2geohex(lat, lon, level=7, locator=_DEFAULT_LOCATOR):
