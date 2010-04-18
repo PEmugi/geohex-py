@@ -9,7 +9,7 @@ def main():
         version = '0.1',
         author = 'Shinpei Matsuura',
         author_email = 'pe@chizuwota.net',
-        py_modules = ['geohex']
+        packages = ['geohex']
     )
 
 if __name__ == "__main__":
