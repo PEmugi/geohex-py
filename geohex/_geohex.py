@@ -25,11 +25,11 @@ class GeoHex(object):
 
         return (
                 (lat, lon - 2.0 * d),
-                (lat + 1.4 * d, lon - 1.0 * d),
-                (lat + 1.4 * d, lon + 1.0 * d),
+                (lat + self._locator['y_coe'] * d, lon - 1.0 * d),
+                (lat + self._locator['y_coe'] * d, lon + 1.0 * d),
                 (lat, lon + 2.0 * d),
-                (lat - 1.4 * d, lon + 1.0 * d),
-                (lat - 1.4 * d, lon - 1.0 * d),
+                (lat - self._locator['y_coe'] * d, lon + 1.0 * d),
+                (lat - self._locator['y_coe'] * d, lon - 1.0 * d),
                 (lat, lon - 2.0 * d)
                 )
 
@@ -122,8 +122,8 @@ def _latlon2geohex(lat, lon, level=7, locator=constants.DEFAULT_LOCATOR):
     lon_grid = lon * locator['h_grid']
     lat_grid = lat * locator['h_grid']
     unit_x = 6.0 * h_size
-    unit_y = 2.8 * h_size
-    h_k = (round((1.4/3) * locator['h_grid'])) / locator['h_grid']
+    unit_y = locator['y_coe'] * 2 * h_size
+    h_k = (round((locator['y_coe']/3) * locator['h_grid'])) / locator['h_grid']
     base_x = math.floor((locator['min_x_lon'] + locator['min_x_lat'] / h_k) / unit_x)
     base_y = math.floor((locator['min_y_lat'] - h_k * locator['min_y_lon']) / unit_y)
     h_pos_x = (lon_grid + lat_grid/h_k) / unit_x - base_x
@@ -152,8 +152,8 @@ def _geohex2latlon(hexcode, locator=constants.DEFAULT_LOCATOR):
 
     h_size = level * locator['h_size']
     unit_x = 6.0 * h_size
-    unit_y = 2.8 * h_size
-    h_k = (round((1.4/3.0) * locator['h_grid'])) / locator['h_grid']
+    unit_y = locator['y_coe'] * 2 * h_size
+    h_k = (round((locator['y_coe']/3.0) * locator['h_grid'])) / locator['h_grid']
     base_x = math.floor((locator['min_x_lon'] + locator['min_x_lat'] / h_k) / unit_x)
     base_y = math.floor((locator['min_y_lat'] - h_k * locator['min_y_lon']) / unit_y)
 
