@@ -13,7 +13,7 @@ DEFAULT_LOCATOR = {
                     'min_y_lat': 24228.0,
                     'h_grid': 1000,
                     'h_size': 0.5,
-                    'y_coe': 1.4, # 6角形の中心から上辺への距離。正六角形の場合は3^2
+                    'y_coe': 1.4, # 6隗貞ｽ｢縺ｮ荳ｭ蠢�縺九ｉ荳願ｾｺ縺ｸ縺ｮ霍晞屬縲よｭ｣蜈ｭ隗貞ｽ｢縺ｮ蝣ｴ蜷医�ｯ3^2
                     'to_latlon': lambda x: x,
                     'to_unit': lambda x: x
                     }
